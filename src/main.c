@@ -12,8 +12,9 @@ int main(int argc, char *argv[]) {
 	// Declara as variáveis
 	char * inputFileName = argv[1];
 	char * outputFileName = argv[2];
-	int i, j, numeroInstancias, tamanhoBytesMemoriaFisica, tamanhoBytesPagina, numeroAcessos;
+	int i, j, numeroInstancias, tamanhoBytesMemoriaFisica, tamanhoBytesPagina, numeroAcessos, valorAcessado;
 
+	
 	// Abrir arquivo de entrada
 	FILE * inputFileOpen;
 	if ((inputFileOpen = fopen(inputFileName, "r")) == NULL) {
@@ -31,9 +32,15 @@ int main(int argc, char *argv[]) {
 
 	for(i = 0; i < numeroInstancias; i++) {
 		// Lê a entrada
-		fscanf(inputFileOpen, "%d", tamanhoBytesMemoriaFisica);
-		fscanf(inputFileOpen, "%d", tamanhoBytesPagina);
-		fscanf(inputFileOpen, "%d", numeroAcessos);
+		fscanf(inputFileOpen, "%d", &tamanhoBytesMemoriaFisica);
+		fscanf(inputFileOpen, "%d", &tamanhoBytesPagina);
+		fscanf(inputFileOpen, "%d", &numeroAcessos);
+
+		for (j = 0; i < numeroAcessos; ++i) {
+
+			fscanf(inputFileOpen, "%d", &valorAcessado);
+			printf("%d\n", valorAcessado >> (tamanhoBytesMemoriaFisica/tamanhoBytesPagina));
+		}
 
 	}
 
