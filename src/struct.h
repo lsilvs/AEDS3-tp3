@@ -1,5 +1,8 @@
 // .h
 
+#ifndef STRUCT_H_INCLUDED
+#define STRUCT_H_INCLUDED
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -36,3 +39,5 @@ void Retira(TipoApontador p, TipoLista * Lista, TipoItem *Item);
 void Imprime(TipoLista Lista);
 
 short Find(TipoLista * Lista, TipoItem pagina);
+
+#endif
