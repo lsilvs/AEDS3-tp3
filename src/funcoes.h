@@ -6,5 +6,6 @@
 #include "struct.h"
 
 void fifo(TipoLista * memoria, TipoItem pagina);
+void lfu(TipoLista * memoria, TipoItem pagina);
 
 #endif

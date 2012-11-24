@@ -41,20 +41,37 @@ int main(int argc, char *argv[]) {
 
 		numeroPaginas = tamanhoBytesMemoriaFisica/tamanhoBytesPagina;
 
-		TipoLista * fifoList = (TipoLista *) malloc(numeroPaginas * sizeof(TipoLista));
+		TipoLista * fifoList = (TipoLista *) malloc(sizeof(TipoLista));
 		FLVazia(fifoList);
 		fifoList->misses = 0;
 		fifoList->numeroPaginas = numeroPaginas;
 		fifoList->numeroPaginasLivres = numeroPaginas;
 
+		TipoLista * lruList = (TipoLista *) malloc(sizeof(TipoLista));
+		FLVazia(lruList);
+		lruList->misses = 0;
+		lruList->numeroPaginas = numeroPaginas;
+		lruList->numeroPaginasLivres = numeroPaginas;
+
+		TipoLista * lfuList = (TipoLista *) malloc(sizeof(TipoLista));
+		FLVazia(lfuList);
+		lfuList->misses = 0;
+		lfuList->numeroPaginas = numeroPaginas;
+		lfuList->numeroPaginasLivres = numeroPaginas;
+
 		for (j = 0; i < numeroAcessos; ++i) {
 			fscanf(inputFileOpen, "%d", &valorAcessado);
 			paginaAtual.Chave = valorAcessado >> numeroPaginas;
+
 			fifo(fifoList, paginaAtual);
+			lru(lruList, paginaAtual);
+			// lfu(lfuList, paginaAtual);
 
 		}
-		
+
 		printf("%d\n", fifoList->misses);
+		printf("%d\n", lruList->misses);
+		// printf("%d\n", lfuList->misses);
 	}
 
 
