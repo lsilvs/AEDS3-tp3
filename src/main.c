@@ -6,15 +6,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "funcoes.h"
 #include "struct.h"
+#include "funcoes.h"
+
 
 int main(int argc, char *argv[]) {
 	// Declara as variáveis
 	char * inputFileName = argv[1];
 	char * outputFileName = argv[2];
-	int i, j, numeroInstancias, tamanhoBytesMemoriaFisica, tamanhoBytesPagina, numeroAcessos, valorAcessado;
-	
+	int i, j, numeroInstancias, tamanhoBytesMemoriaFisica, tamanhoBytesPagina, numeroAcessos, 
+		valorAcessado, numeroPaginas;
+	TipoItem paginaAtual;
+
 	// Abrir arquivo de entrada
 	FILE * inputFileOpen;
 	if ((inputFileOpen = fopen(inputFileName, "r")) == NULL) {
@@ -36,12 +39,24 @@ int main(int argc, char *argv[]) {
 		fscanf(inputFileOpen, "%d", &tamanhoBytesPagina);
 		fscanf(inputFileOpen, "%d", &numeroAcessos);
 
+		numeroPaginas = tamanhoBytesMemoriaFisica/tamanhoBytesPagina;
+
+		TipoLista * fifoList = (TipoLista *) malloc(numeroPaginas * sizeof(TipoLista));
+		FLVazia(fifoList);
+		fifoList->misses = 0;
+		fifoList->numeroPaginas = numeroPaginas;
+		fifoList->numeroPaginasLivres = numeroPaginas;
+
 		for (j = 0; i < numeroAcessos; ++i) {
 			fscanf(inputFileOpen, "%d", &valorAcessado);
-			printf("%d\n", valorAcessado >> (tamanhoBytesMemoriaFisica/tamanhoBytesPagina));
-		}
+			paginaAtual.Chave = valorAcessado >> numeroPaginas;
+			fifo(fifoList, paginaAtual);
 
+		}
+		
+		printf("%d\n", fifoList->misses);
 	}
+
 
 	// Retorna 0 se conseguiu fechar o arquivo com sucesso
 	if(fclose(inputFileOpen) != 0) {

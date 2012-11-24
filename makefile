@@ -4,7 +4,7 @@ OPTMIZE = -g3 -O3
 LIBS = -lc
 
 #Objetos
-OBJS =  src/main.c src/funcoes.c
+OBJS =  src/main.c src/funcoes.c src/struct.c
 
 # Nome do aplicativo
 APPNAME = tp3

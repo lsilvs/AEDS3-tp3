@@ -1,6 +1,5 @@
 // .h
 
-#include <sys/time.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -8,7 +7,6 @@ typedef int TipoChave;
 
 typedef struct {
   int Chave;
-  /* outros componentes */
 } TipoItem;
 
 typedef struct TipoCelula *TipoApontador;
@@ -20,6 +18,9 @@ typedef struct TipoCelula {
 
 typedef struct {
   TipoApontador Primeiro, Ultimo;
+  int numeroPaginas;
+  int numeroPaginasLivres;
+  int misses;
 } TipoLista;
 
 /* ========================================================================= */
@@ -30,6 +31,8 @@ int Vazia(TipoLista Lista);
 
 void Insere(TipoItem x, TipoLista *Lista);
 
-void Retira(TipoApontador p, TipoLista *Lista, TipoItem *Item);
+void Retira(TipoApontador p, TipoLista * Lista, TipoItem *Item);
 
 void Imprime(TipoLista Lista);
+
+short Find(TipoLista * Lista, TipoItem pagina);
