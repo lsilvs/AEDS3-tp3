@@ -62,16 +62,17 @@ int main(int argc, char *argv[]) {
 		for (j = 0; i < numeroAcessos; ++i) {
 			fscanf(inputFileOpen, "%d", &valorAcessado);
 			paginaAtual.Chave = valorAcessado >> numeroPaginas;
+			paginaAtual.acessos = 0;
 
 			fifo(fifoList, paginaAtual);
 			lru(lruList, paginaAtual);
-			// lfu(lfuList, paginaAtual);
+			lfu(lfuList, paginaAtual);
 
 		}
 
 		printf("%d\n", fifoList->misses);
 		printf("%d\n", lruList->misses);
-		// printf("%d\n", lfuList->misses);
+		printf("%d\n", lfuList->misses);
 	}
 
 

@@ -10,6 +10,7 @@ typedef int TipoChave;
 
 typedef struct {
   int Chave;
+  int acessos;
 } TipoItem;
 
 typedef struct TipoCelula * TipoApontador;
@@ -34,10 +35,14 @@ int Vazia(TipoLista Lista);
 
 void Insere(TipoItem x, TipoLista * Lista);
 
+void InsereOrdenado(TipoItem x, TipoLista * Lista);
+
 void Retira(TipoApontador p, TipoLista * Lista);
 
 void Imprime(TipoLista Lista);
 
 TipoApontador Find(TipoLista * Lista, TipoItem pagina);
+
+TipoApontador FindMinAcessos(TipoLista *Lista);
 
 #endif

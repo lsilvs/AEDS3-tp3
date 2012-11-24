@@ -18,9 +18,10 @@ void Insere(TipoItem x, TipoLista * Lista) {
   Lista -> Ultimo -> Item = x;
   Lista -> Ultimo -> Prox = NULL;
   Lista -> numeroPaginasLivres--;
+  x.acessos++;
 }
 
-void Retira(TipoApontador p, TipoLista *Lista) {
+void Retira(TipoApontador p, TipoLista * Lista) {
   TipoApontador aux;
   if (Vazia(*Lista) || p == NULL)  {
     printf(" Erro: Lista vazia ou posicao nao existe\n");
@@ -33,7 +34,7 @@ void Retira(TipoApontador p, TipoLista *Lista) {
   if (p -> Prox == NULL)
     Lista -> Ultimo = p;
   
-  // free(aux);
+  free(aux);
   Lista -> numeroPaginasLivres++;
 }
 
@@ -47,17 +48,8 @@ void Pop(TipoLista * Lista) {
   Aux = Lista->Primeiro -> Prox;
 
   Lista->Primeiro -> Prox = Aux -> Prox;
-  // free(Aux);
+  free(Aux);
   Lista -> numeroPaginasLivres++;
-}
-
-void Imprime(TipoLista Lista) { 
-  TipoApontador Aux;
-  Aux = Lista.Primeiro -> Prox;
-  while (Aux != NULL)  {
-    printf("%d\n", Aux -> Item.Chave);
-    Aux = Aux -> Prox;
-  }
 }
 
 TipoApontador Find(TipoLista * Lista, TipoItem pagina) {
@@ -72,25 +64,18 @@ TipoApontador Find(TipoLista * Lista, TipoItem pagina) {
   return Aux;
 }
 
-short PopEsp(TipoLista * Lista, TipoItem pagina) {
-  if (Vazia(*Lista))  {
-    printf(" Erro: Lista vazia ou posicao nao existe\n");
-    return;
-  }
+TipoApontador FindMinAcessos(TipoLista *Lista) {
+    TipoApontador aux = Lista->Primeiro->Prox;
+    TipoApontador auxProx = Lista->Primeiro->Prox;
 
-  TipoApontador Aux, aux2;
-  Aux = Lista->Primeiro->Prox;
-  while (Aux != NULL)  {
-    if (Aux -> Item.Chave == pagina.Chave) {
-      aux2 = Aux -> Prox;
-      Aux -> Prox = aux2 -> Prox;
-
-      if (Aux -> Prox == NULL)
-        Lista -> Ultimo = Aux;
-      return 1;
+    while(auxProx != NULL) {
+        if (aux->Item.acessos <= auxProx->Item.acessos) {
+          auxProx = auxProx->Prox;
+        } else {
+            aux = auxProx;
+            auxProx = auxProx->Prox;
+        }
     }
-    Aux = Aux -> Prox;
-  }
-  Lista -> numeroPaginasLivres++;
-  return 0;
+
+     return aux;
 }
