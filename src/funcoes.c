@@ -21,7 +21,6 @@ void fifo(Tipo_Lista * memoria, struct tipo_elemento pagina) {
 
 void lru(Tipo_Lista * memoria, struct tipo_elemento pagina) {
     struct tipo_elemento * p;
-    p = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
     p = pesquisa(memoria, pagina.valor);
     if (p == NULL) {
         if (memoria->numeroPaginasLivres > 0) {
@@ -35,12 +34,10 @@ void lru(Tipo_Lista * memoria, struct tipo_elemento pagina) {
         elimina(memoria, p);
         insere(memoria, pagina.valor);
     }
-    free(p);
 }
 
 void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina) {
     struct tipo_elemento * p;
-    p = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
     p = pesquisa(memoria, pagina.valor);
     if (p == NULL) {
         if (memoria->numeroPaginasLivres > 0) {
@@ -54,5 +51,4 @@ void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina) {
         p->acessos++;
         ordenaByAcessos(memoria);
     }
-    free(p);
 }
