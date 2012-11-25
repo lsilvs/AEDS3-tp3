@@ -2,80 +2,111 @@
 
 #include "struct.h"
 
-void FLVazia(TipoLista *Lista) {
-  Lista -> Primeiro = (TipoApontador) malloc(sizeof(TipoCelula));
-  Lista -> Ultimo = Lista -> Primeiro;
-  Lista -> Primeiro -> Prox = NULL;
+
+void inicializa (Tipo_Lista * a) {
+  a->qtd = 0;
+  a->fim = NULL;
+  a->inicio = NULL;
+  a->misses = 0;
 }
 
-int Vazia(TipoLista Lista) { 
-  return (Lista.Primeiro == Lista.Ultimo);
+int isVazio(Tipo_Lista * a) {
+  return a->qtd;
 }
 
-void Insere(TipoItem x, TipoLista * Lista) { 
-  Lista -> Ultimo -> Prox = (TipoApontador) malloc(sizeof(TipoCelula));
-  Lista -> Ultimo = Lista -> Ultimo -> Prox;
-  Lista -> Ultimo -> Item = x;
-  Lista -> Ultimo -> Prox = NULL;
-  Lista -> numeroPaginasLivres--;
-  x.acessos++;
+void mostra (struct tipo_elemento * tmp, int funcionamento)
+{
+          
+     while (tmp != NULL ) { 
+
+         printf ("Valor=%d\n",tmp->valor);
+   if (funcionamento==0) return;
+  tmp = tmp->proximo;
+   
+     }
+
 }
 
-void Retira(TipoApontador p, TipoLista * Lista) {
-  TipoApontador aux;
-  if (Vazia(*Lista) || p == NULL)  {
-    printf(" Erro: Lista vazia ou posicao nao existe\n");
-    return;
-  }
-
-  aux = p -> Prox;
-  p -> Prox = aux -> Prox;
-  
-  if (p -> Prox == NULL)
-    Lista -> Ultimo = p;
-  
-  free(aux);
-  Lista -> numeroPaginasLivres++;
-}
-
-void Pop(TipoLista * Lista) {
-  if (Vazia(*Lista))  {
-    printf(" Erro: Lista vazia ou posicao nao existe\n");
-    return;
-  }
-
-  TipoApontador Aux;
-  Aux = Lista->Primeiro -> Prox;
-
-  Lista->Primeiro -> Prox = Aux -> Prox;
-  free(Aux);
-  Lista -> numeroPaginasLivres++;
-}
-
-TipoApontador Find(TipoLista * Lista, TipoItem pagina) {
-  TipoApontador Aux;
-  Aux = Lista->Primeiro->Prox;
-  while (Aux != NULL)  {
-    if (Aux -> Item.Chave == pagina.Chave) {  
-      return Aux;
+struct tipo_elemento * pesquisa (Tipo_Lista * a, int alvo ) {
+    struct tipo_elemento * tmp;
+    tmp = a->inicio;
+    while (tmp != NULL ) { 
+      if (alvo == tmp->valor) {
+        return (tmp);
+      }
+      tmp = tmp->proximo; 
     }
-    Aux = Aux -> Prox;
-  }
-  return Aux;
+    return (NULL);
 }
 
-TipoApontador FindMinAcessos(TipoLista *Lista) {
-    TipoApontador aux = Lista->Primeiro->Prox;
-    TipoApontador auxProx = Lista->Primeiro->Prox;
+void desaloca_lista(Tipo_Lista * a) {
+  struct tipo_elemento * tmp, * aux;
+  tmp = a->inicio;
+  while (tmp != NULL) {
+    aux = tmp->proximo;
+    free(tmp);
+    tmp = aux;
+  }
+}
 
-    while(auxProx != NULL) {
-        if (aux->Item.acessos <= auxProx->Item.acessos) {
-          auxProx = auxProx->Prox;
-        } else {
-            aux = auxProx;
-            auxProx = auxProx->Prox;
-        }
+void elimina (Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo) {
+  
+  if (ponteiro_alvo->anterior == NULL && ponteiro_alvo->proximo == NULL) {
+    a->fim = NULL;
+    a->inicio = NULL;
+  } else if (ponteiro_alvo->anterior == NULL) {   // o elemento eh o primeiro
+    a->inicio = ponteiro_alvo->proximo;
+    ponteiro_alvo->proximo->anterior = NULL;
+  } else if (ponteiro_alvo->proximo == NULL) { // o elemento eh o ultimo
+    a->fim = ponteiro_alvo->anterior;
+    ponteiro_alvo->anterior->proximo = NULL;
+  } else {
+    ponteiro_alvo->anterior->proximo = ponteiro_alvo->proximo;
+    ponteiro_alvo->proximo->anterior = ponteiro_alvo->anterior;
+  }
+
+  a->qtd--;
+  a->numeroPaginasLivres++;
+  free(ponteiro_alvo);
+}
+
+void insere (Tipo_Lista * a, int v) {
+  struct tipo_elemento * x;
+  x = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
+
+  if (a->inicio == NULL) {
+    a->inicio = x;
+    a->fim = x;
+    x->proximo = NULL;
+  } else {
+    x->proximo = a->inicio;
+    a->inicio->anterior=x;
+    a->inicio=x;
+  }
+
+  x->anterior = NULL; 
+  x->valor = v;
+  a->qtd++;
+  a->numeroPaginasLivres--;
+}
+
+
+void ordenaByAcessos(Tipo_Lista * a) {
+  struct tipo_elemento * aux1, * aux2, * aux3;
+  aux1 = a->inicio;
+  aux2 = aux1->proximo;
+
+  while (aux2 != NULL) {
+    if (aux1->acessos > aux2->acessos) {
+      aux3 = aux1;
+      aux1 = aux2;
+      aux2 = aux3;
     }
 
-     return aux;
+    aux1 = aux2;
+    aux2 = aux2->proximo;
+  }
+
 }
+
+

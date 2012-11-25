@@ -5,56 +5,52 @@
 #include <string.h>
 #include "funcoes.h"
 
-void fifo(TipoLista * memoria, TipoItem pagina) {
-    TipoApontador p = NULL;
-    p = Find(memoria, pagina);
+void fifo(Tipo_Lista * memoria, struct tipo_elemento pagina) {
+    struct tipo_elemento * p;
+    p = pesquisa(memoria, pagina.valor);
     if (p == NULL) {
         if (memoria->numeroPaginasLivres > 0) {
-            Insere(pagina, memoria);
+            insere(memoria, pagina.valor);
         } else {
-            Pop(memoria);
-            Insere(pagina, memoria);
+            elimina(memoria, memoria->fim);
+            insere(memoria, pagina.valor);
         }
         memoria->misses++;
     }
 }
 
-void lru(TipoLista * memoria, TipoItem pagina) {
-    TipoApontador p = NULL;
-    p = Find(memoria, pagina);
+void lru(Tipo_Lista * memoria, struct tipo_elemento pagina) {
+    struct tipo_elemento * p;
+    p = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
+    p = pesquisa(memoria, pagina.valor);
     if (p == NULL) {
         if (memoria->numeroPaginasLivres > 0) {
-            Insere(pagina, memoria);
+            insere(memoria, pagina.valor);
         } else {
-            Pop(memoria);
-            Insere(pagina, memoria);
+            elimina(memoria, memoria->fim);
+            insere(memoria, pagina.valor);
         }
         memoria->misses++;
     } else {
-        if (p->Prox != NULL) {
-            Retira(p, memoria);
-            Insere(pagina, memoria);
-        }
+        elimina(memoria, p);
+        insere(memoria, pagina.valor);
     }
 }
 
-void lfu(TipoLista * memoria, TipoItem pagina) {
-    TipoApontador p = NULL;
-    p = Find(memoria, pagina);
+void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina) {
+    struct tipo_elemento * p;
+    p = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
+    p = pesquisa(memoria, pagina.valor);
     if (p == NULL) {
         if (memoria->numeroPaginasLivres > 0) {
-            Insere(pagina, memoria);
+            insere(memoria, pagina.valor);
         } else {
-            Pop(memoria);
-            Insere(pagina, memoria);
+            elimina(memoria, memoria->inicio);
+            insere(memoria, pagina.valor);
         }
         memoria->misses++;
     } else {
-        p = FindMinAcessos(memoria);
-        // Pode gerar problemas futuros
-        if (p->Prox != NULL){
-            Retira(p, memoria);
-            Insere(pagina, memoria);
-        }
+        p->acessos++;
+        ordenaByAcessos(memoria);
     }
 }

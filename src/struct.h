@@ -3,46 +3,37 @@
 #ifndef STRUCT_H_INCLUDED
 #define STRUCT_H_INCLUDED
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-typedef int TipoChave;
 
-typedef struct {
-  int Chave;
+struct tipo_elemento {
+  int valor;  
   int acessos;
-} TipoItem;
-
-typedef struct TipoCelula * TipoApontador;
-
-typedef struct TipoCelula {
-  TipoItem Item;
-  TipoApontador Prox;
-} TipoCelula;
+  struct tipo_elemento *proximo;
+  struct tipo_elemento *anterior;
+};
 
 typedef struct {
-  TipoApontador Primeiro, Ultimo;
-  int numeroPaginas;
+  int qtd;
+  struct tipo_elemento * fim, * inicio;
   int numeroPaginasLivres;
   int misses;
-} TipoLista;
+} Tipo_Lista;
 
-/* ========================================================================= */
 
-void FLVazia(TipoLista *Lista);
+void inicializa(Tipo_Lista * a);
 
-int Vazia(TipoLista Lista);
+void insere(Tipo_Lista * a, int v);
 
-void Insere(TipoItem x, TipoLista * Lista);
+void mostra(struct tipo_elemento * tmp, int funcionamento);
 
-void InsereOrdenado(TipoItem x, TipoLista * Lista);
+struct tipo_elemento * pesquisa(Tipo_Lista * a, int alvo);
 
-void Retira(TipoApontador p, TipoLista * Lista);
+void desaloca_lista(Tipo_Lista * a);
 
-void Imprime(TipoLista Lista);
+void ordenaByAcessos(Tipo_Lista * a);
 
-TipoApontador Find(TipoLista * Lista, TipoItem pagina);
-
-TipoApontador FindMinAcessos(TipoLista *Lista);
+void elimina(Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo);
 
 #endif

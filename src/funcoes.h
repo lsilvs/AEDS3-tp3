@@ -5,7 +5,10 @@
 
 #include "struct.h"
 
-void fifo(TipoLista * memoria, TipoItem pagina);
-void lfu(TipoLista * memoria, TipoItem pagina);
+void fifo(Tipo_Lista * memoria, struct tipo_elemento pagina);
+
+void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina);
+
+void lru(Tipo_Lista * memoria, struct tipo_elemento pagina);
 
 #endif

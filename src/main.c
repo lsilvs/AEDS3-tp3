@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	char * outputFileName = argv[2];
 	int i, j, numeroInstancias, tamanhoBytesMemoriaFisica, tamanhoBytesPagina, numeroAcessos, 
 		valorAcessado, numeroPaginas;
-	TipoItem paginaAtual;
+	struct tipo_elemento paginaAtual;
 
 	// Abrir arquivo de entrada
 	FILE * inputFileOpen;
@@ -41,28 +41,22 @@ int main(int argc, char *argv[]) {
 
 		numeroPaginas = tamanhoBytesMemoriaFisica/tamanhoBytesPagina;
 
-		TipoLista * fifoList = (TipoLista *) malloc(sizeof(TipoLista));
-		FLVazia(fifoList);
-		fifoList->misses = 0;
-		fifoList->numeroPaginas = numeroPaginas;
+		Tipo_Lista * fifoList = (Tipo_Lista *) malloc(sizeof(Tipo_Lista));
+		inicializa(fifoList);
 		fifoList->numeroPaginasLivres = numeroPaginas;
 
-		TipoLista * lruList = (TipoLista *) malloc(sizeof(TipoLista));
-		FLVazia(lruList);
-		lruList->misses = 0;
-		lruList->numeroPaginas = numeroPaginas;
+		Tipo_Lista * lruList = (Tipo_Lista *) malloc(sizeof(Tipo_Lista));
+		inicializa(lruList);
 		lruList->numeroPaginasLivres = numeroPaginas;
 
-		TipoLista * lfuList = (TipoLista *) malloc(sizeof(TipoLista));
-		FLVazia(lfuList);
-		lfuList->misses = 0;
-		lfuList->numeroPaginas = numeroPaginas;
+		Tipo_Lista * lfuList = (Tipo_Lista *) malloc(sizeof(Tipo_Lista));
+		inicializa(lfuList);
 		lfuList->numeroPaginasLivres = numeroPaginas;
 
 		for (j = 0; i < numeroAcessos; ++i) {
 			fscanf(inputFileOpen, "%d", &valorAcessado);
-			paginaAtual.Chave = valorAcessado >> numeroPaginas;
-			paginaAtual.acessos = 0;
+			paginaAtual.valor = valorAcessado >> numeroPaginas;
+			paginaAtual.acessos = 1;
 
 			fifo(fifoList, paginaAtual);
 			lru(lruList, paginaAtual);
@@ -70,9 +64,13 @@ int main(int argc, char *argv[]) {
 
 		}
 
-		printf("%d\n", fifoList->misses);
-		printf("%d\n", lruList->misses);
-		printf("%d\n", lfuList->misses);
+		fprintf(outputFileOpen, "%d ", fifoList->misses);
+		fprintf(outputFileOpen, "%d ", lruList->misses);
+		fprintf(outputFileOpen, "%d\n", lfuList->misses);
+
+		desaloca_lista(fifoList);
+		desaloca_lista(lruList);
+		desaloca_lista(lfuList);
 	}
 
 
