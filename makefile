@@ -19,22 +19,20 @@ OUTPUTFILE = output.txt
 release: ; $(GCC) $(OPTMIZE) $(LIBS) $(OBJS) -o $(APPNAME)
 
 clean:
-	rm -f $(APPNAME1) $(APPNAME2) $(OUTPUTFILE1) $(OUTPUTFILE2) *.o
+	rm -f $(APPNAME) $(OUTPUTFILE) *.o
 
 run:
 	make
 	./$(APPNAME) $(INPUTFILE) $(OUTPUTFILE)
 
-
 test:
 	make
-	./$(APPNAME1) $(INPUTFILETEST) $(OUTPUTFILE)
-	
+	./$(APPNAME) $(INPUTFILETEST) $(OUTPUTFILE)
 
 time:
 	make
-	time ./$(APPNAME1) $(INPUTFILE) $(OUTPUTFILE1)
+	time ./$(APPNAME) $(INPUTFILE) $(OUTPUTFILE)
 
 analysis:
 	make
-	$(VALGRIND) ./$(APPNAME1) $(INPUTFILE) $(OUTPUTFILE1)
+	$(VALGRIND) ./$(APPNAME) $(INPUTFILE) $(OUTPUTFILE)
