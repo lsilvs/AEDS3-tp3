@@ -47,6 +47,7 @@ void desaloca_lista(Tipo_Lista * a) {
     free(tmp);
     tmp = aux;
   }
+  free(a);
 }
 
 void elimina (Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo) {

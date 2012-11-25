@@ -35,6 +35,7 @@ void lru(Tipo_Lista * memoria, struct tipo_elemento pagina) {
         elimina(memoria, p);
         insere(memoria, pagina.valor);
     }
+    free(p);
 }
 
 void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina) {
@@ -53,4 +54,5 @@ void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina) {
         p->acessos++;
         ordenaByAcessos(memoria);
     }
+    free(p);
 }
