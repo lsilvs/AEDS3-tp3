@@ -53,9 +53,9 @@ int main(int argc, char *argv[]) {
 		inicializa(lfuList);
 		lfuList->numeroPaginasLivres = numeroPaginas;
 
-		for (j = 0; i < numeroAcessos; ++i) {
+		for (j = 0; j < numeroAcessos; j++) {
 			fscanf(inputFileOpen, "%d", &valorAcessado);
-			paginaAtual.valor = valorAcessado >> numeroPaginas;
+			paginaAtual.valor = valorAcessado / tamanhoBytesPagina;
 			paginaAtual.acessos = 1;
 
 			fifo(fifoList, paginaAtual);

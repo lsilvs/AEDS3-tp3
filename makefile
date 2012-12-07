@@ -13,13 +13,13 @@ APPNAME = tp3
 VALGRIND = valgrind --tool=memcheck --leak-check=yes --show-reachable=yes
 
 #arquivos
-INPUTFILE = input.txt
+INPUTFILE = doc/testes/entrada
 OUTPUTFILE = output.txt
 
 release: ; $(GCC) $(OPTMIZE) $(LIBS) $(OBJS) -o $(APPNAME)
 
 clean:
-	rm -f $(APPNAME) $(OUTPUTFILE) *.o
+	rm -rf $(APPNAME) $(OUTPUTFILE) *.o *.dSYM
 
 run:
 	make

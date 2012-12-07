@@ -14,29 +14,24 @@ int isVazio(Tipo_Lista * a) {
   return a->qtd;
 }
 
-void mostra (struct tipo_elemento * tmp, int funcionamento)
-{
-          
-     while (tmp != NULL ) { 
-
-         printf ("Valor=%d\n",tmp->valor);
-   if (funcionamento==0) return;
-  tmp = tmp->proximo;
-   
-     }
-
+void mostra (struct tipo_elemento * tmp, int funcionamento) {
+  while (tmp != NULL ) { 
+    printf ("Valor=%d\n",tmp->valor);
+    if (funcionamento==0) return;
+    tmp = tmp->proximo;
+  }
 }
 
 struct tipo_elemento * pesquisa (Tipo_Lista * a, int alvo ) {
-    struct tipo_elemento * tmp;
-    tmp = a->inicio;
-    while (tmp != NULL ) { 
-      if (alvo == tmp->valor) {
-        return (tmp);
-      }
-      tmp = tmp->proximo; 
+  struct tipo_elemento * tmp;
+  tmp = a->inicio;
+  while (tmp != NULL ) { 
+    if (alvo == tmp->valor) {
+      return (tmp);
     }
-    return (NULL);
+    tmp = tmp->proximo; 
+  }
+  return (NULL);
 }
 
 void desaloca_lista(Tipo_Lista * a) {
@@ -46,12 +41,13 @@ void desaloca_lista(Tipo_Lista * a) {
     aux = tmp->proximo;
     free(tmp);
     tmp = aux;
+    a->qtd--;
+    a->numeroPaginasLivres++;
   }
   free(a);
 }
 
-void elimina (Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo) {
-  
+  void elimina (Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo) {
   if (ponteiro_alvo->anterior == NULL && ponteiro_alvo->proximo == NULL) {
     a->fim = NULL;
     a->inicio = NULL;
@@ -72,42 +68,57 @@ void elimina (Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo) {
 }
 
 void insere (Tipo_Lista * a, int v) {
-  struct tipo_elemento * x;
-  x = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
+  struct tipo_elemento * aux;
+  aux = (struct tipo_elemento *) malloc (sizeof(struct tipo_elemento));
 
   if (a->inicio == NULL) {
-    a->inicio = x;
-    a->fim = x;
-    x->proximo = NULL;
+    a->inicio = aux;
+    a->fim = aux;
+    aux->proximo = NULL;
   } else {
-    x->proximo = a->inicio;
-    a->inicio->anterior=x;
-    a->inicio=x;
+    aux->proximo = a->inicio;
+    a->inicio->anterior = aux;
+    a->inicio = aux;
   }
 
-  x->anterior = NULL; 
-  x->valor = v;
+  aux->anterior = NULL; 
+  aux->valor = v;
+  aux->acessos = 1;
   a->qtd++;
   a->numeroPaginasLivres--;
 }
 
+void ordena_by_acessos (struct tipo_elemento * e) {
+  struct tipo_elemento * aux = (struct tipo_elemento *) malloc ( sizeof (struct tipo_elemento));
+  if (e->proximo != NULL) {
+    if ((e->acessos) == (e->proximo->acessos)) {
+      if ((e->valor) > (e->proximo->valor)) {
+        //copia elemento para auxiliar
+        aux->valor = e->valor;
+        aux->acessos = e->acessos;
 
-void ordenaByAcessos(Tipo_Lista * a) {
-  struct tipo_elemento * aux1, * aux2, * aux3;
-  aux1 = a->inicio;
-  aux2 = aux1->proximo;
+        //copia proximo para elemento
+        e->valor = e->proximo->valor;
+        e->acessos = e->proximo->acessos;
 
-  while (aux2 != NULL) {
-    if (aux1->acessos > aux2->acessos) {
-      aux3 = aux1;
-      aux1 = aux2;
-      aux2 = aux3;
+        //copia elemento para proximo
+        e->proximo->valor = aux->valor;
+        e->proximo->acessos = aux->acessos;
+      }
+    } else if ((e->acessos) > (e->proximo->acessos)) {
+      //copia elemento para auxiliar
+      aux->valor = e->valor;
+      aux->acessos = e->acessos;
+
+      //copia proximo para elemento
+      e->valor = e->proximo->valor;
+      e->acessos = e->proximo->acessos;
+
+      //copia elemento para proximo
+      e->proximo->valor = aux->valor;
+      e->proximo->acessos = aux->acessos;
     }
-
-    aux1 = aux2;
-    aux2 = aux2->proximo;
+    ordena_by_acessos(e->proximo);
   }
-
+  free(aux);
 }
-
-

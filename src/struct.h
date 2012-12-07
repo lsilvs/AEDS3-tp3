@@ -24,7 +24,7 @@ typedef struct {
 
 void inicializa(Tipo_Lista * a);
 
-void insere(Tipo_Lista * a, int v);
+int isVazio(Tipo_Lista * a);
 
 void mostra(struct tipo_elemento * tmp, int funcionamento);
 
@@ -32,8 +32,10 @@ struct tipo_elemento * pesquisa(Tipo_Lista * a, int alvo);
 
 void desaloca_lista(Tipo_Lista * a);
 
-void ordenaByAcessos(Tipo_Lista * a);
-
 void elimina(Tipo_Lista * a, struct tipo_elemento * ponteiro_alvo);
+
+void insere(Tipo_Lista * a, int v);
+
+void ordena_by_acessos (struct tipo_elemento * e);
 
 #endif

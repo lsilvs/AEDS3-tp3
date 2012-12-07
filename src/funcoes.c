@@ -47,8 +47,9 @@ void lfu(Tipo_Lista * memoria, struct tipo_elemento pagina) {
             insere(memoria, pagina.valor);
         }
         memoria->misses++;
+        ordena_by_acessos(memoria->inicio);
     } else {
         p->acessos++;
-        ordenaByAcessos(memoria);
+        ordena_by_acessos(memoria->inicio);
     }
 }
