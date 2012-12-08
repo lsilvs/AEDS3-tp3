@@ -13,7 +13,7 @@ APPNAME = tp3
 VALGRIND = valgrind --tool=memcheck --leak-check=yes --show-reachable=yes
 
 #arquivos
-INPUTFILE = doc/testes/entrada
+INPUTFILE = analises.txt
 OUTPUTFILE = output.txt
 
 release: ; $(GCC) $(OPTMIZE) $(LIBS) $(OBJS) -o $(APPNAME)
